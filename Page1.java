@@ -9,10 +9,10 @@ import androidx.fragment.app.Fragment;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 public class Page1 extends Fragment {
-     // required empty public constructor.
 
+// required empty public constructor.
     public Page1() {
-       
+        
     }
 
     @Override
