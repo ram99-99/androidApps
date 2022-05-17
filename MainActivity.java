@@ -1,40 +1,49 @@
-package com.example.pageview;
+package com.example.customalertdialog;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
-
-import com.google.android.material.tabs.TabLayout;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ViewPagerAdapter viewPagerAdapter;
-    private ViewPager viewPager;
-    private TabLayout tabLayout;
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(
+            Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+    }
 
-        viewPager = findViewById(R.id.viewpager);
+    public void showAlertDialogButtonClicked(View view)
+    {
+        // Create an alert builder
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Name");
+        // set the custom layout
+        final View customLayout = getLayoutInflater().inflate(R.layout.custom_layout,null);
+        builder.setView(customLayout);
+        // add a button
+        builder.setPositiveButton("OK",new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog,int which)
+                            {// it is used to send data from the AlertDialog to the Activity
+                                EditText editText = customLayout.findViewById(R.id.editText);
+                                sendDialogDataToActivity(editText.getText().toString());
+                            }
+                        });
 
-        // setting up the adapter
-        viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        // create and show the alert dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
 
-        // add the fragments
-        viewPagerAdapter.add(new Page1(), "page 1");
-        viewPagerAdapter.add(new Page2(), "Page 2");
-        viewPagerAdapter.add(new Page3(), "Page 3");
-
-        // Set the adapter
-        viewPager.setAdapter(viewPagerAdapter);
-
-        // The Page (fragment) titles will be displayed in the
-        // tabLayout hence we need to  set the page viewer
-        // we use the setupWithViewPager().
-        tabLayout = findViewById(R.id.tab_layout);
-        tabLayout.setupWithViewPager(viewPager);
+    private void sendDialogDataToActivity(String data)
+    {
+        Toast.makeText(this, data, Toast.LENGTH_SHORT).show();
     }
 }
